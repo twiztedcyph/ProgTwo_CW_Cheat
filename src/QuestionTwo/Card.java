@@ -1,5 +1,5 @@
 /*
- * This program simulates a deck of cards.
+ * This program simulates the card game: Cheat.
  */
 package QuestionTwo;
 

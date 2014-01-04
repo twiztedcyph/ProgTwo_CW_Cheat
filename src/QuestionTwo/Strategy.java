@@ -1,8 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This program simulates the card game: Cheat.
  */
+
 package QuestionTwo;
 
 /*
@@ -38,7 +37,7 @@ public interface Strategy
 
     /**
      *
-     * @param h
+     * @param h The players current hand
      * @param b the current bid
      * @return true if this player is going to call cheat on the last play b
      */

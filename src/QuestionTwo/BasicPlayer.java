@@ -1,12 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This program simulates the card game: Cheat.
  */
 
 package QuestionTwo;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -17,7 +13,6 @@ public class BasicPlayer implements Player
     private Hand playerHand;
     private Strategy strategy;
     private CardGame cardGame;
-    private final int MAX_OF_ANY_RANK = 4;
     private enum action{PASS, PLAY};
     
     public BasicPlayer(Strategy strategy, CardGame cardGame)
@@ -74,11 +69,6 @@ public class BasicPlayer implements Player
     {
         //so this is where the "player" looks at the last hand played and then plays.....
         Bid myBid = strategy.chooseBid(b, playerHand, strategy.cheat(b, playerHand));
-                
-        if(!playerHand.remove(myBid.getHand()))
-        {
-            System.out.println("Play hand was not removed from this hand....");
-        }
         
         return myBid;
     }
@@ -87,7 +77,6 @@ public class BasicPlayer implements Player
     public boolean callCheat(Bid b)
     {
         //this is where the player looks at the last hand played and decided whether to call cheat.)
-        ArrayList<Card> prevPlayedCards = b.h.getHeldCards();
         return strategy.callCheat(playerHand, b);
     }
     

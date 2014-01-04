@@ -1,5 +1,5 @@
 /*
- * This program simulates a deck of cards.
+ * This program simulates the card game: Cheat.
  */
 
 package QuestionTwo;
@@ -177,7 +177,7 @@ public class Deck implements Iterable<Card>, Serializable
     {
         Card currentCard;
         int loopPass = 0;
-        int currentPosition = 0;
+        int currentPosition = 1;
         
         /**
          * Checks if there is another card to iterate through.
@@ -215,11 +215,11 @@ public class Deck implements Iterable<Card>, Serializable
             if(loopPass == 0)
             {
                 /*
-                 * Set the currentPosition to an odd starting position (1) 
-                 * once the first (even) pass is complete.
+                 * Set the currentPosition to an even starting position (0)
+                 * once the first (odd) pass is complete.
                  */
                 loopPass = 1;
-                currentPosition = 1;
+                currentPosition = 0;
                 currentCard = deck.get(currentPosition);
                 currentPosition += 2;
                 return true;
@@ -239,13 +239,12 @@ public class Deck implements Iterable<Card>, Serializable
         }
         
         /**
-         * Unimplemented remove method as iterators should
-         * not be used for modification.
+         * Remove current iteration object.
          */
         @Override
         public void remove()
         {
-            throw new UnsupportedOperationException("NO!!!");
+            deck.remove(currentPosition);
         }
     }
     

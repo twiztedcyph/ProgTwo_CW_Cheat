@@ -1,8 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This program simulates the card game: Cheat.
  */
+
 package QuestionTwo;
 
 import java.util.*;
@@ -142,12 +141,12 @@ public class BasicCheat implements CardGame
             playTurn();
             System.out.println(" Current discards =\n" + discards);
             c++;
-            System.out.println(" Turn " + c + " Complete. Press any key to continue or enter Q to quit>");
             System.out.println(currentBid.h + " " + currentBid.r);
             for (BasicPlayer basicPlayer : players)
             {
                 System.out.print(basicPlayer.cardsLeft() + " ");
             }
+            System.out.println(" Turn " + c + " Complete. Press any key to continue or enter Q to quit>");
             System.out.println("");
             String str = in.nextLine();
             if (str.equals("Q") || str.equals("q") || str.equals("quit"))

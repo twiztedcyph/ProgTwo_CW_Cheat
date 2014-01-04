@@ -1,5 +1,5 @@
 /*
- * This program simulates a deck of cards.
+ * This program simulates the card game: Cheat.
  */
 
 package QuestionTwo;
@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Hand class.
