@@ -4,10 +4,12 @@
 
 package QuestionTwo;
 
-/*
+/**
  * You should implement a new class BasicStrategy that implements the Strategy
  * interface provided. Basic strategy should 1.	Never cheat 2.	Always play all
  * the cards of the lowest value possible
+ * 
+ * @author Tony
  */
 public interface Strategy
 {

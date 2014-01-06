@@ -125,7 +125,7 @@ public class Deck implements Iterable<Card>, Serializable
     }
     
     /**
-     * Definition of the deal order iterator.
+     * Deal order iterator.
      */
     private class dealOrderIterator implements Iterator<Card>
     {
@@ -171,7 +171,7 @@ public class Deck implements Iterable<Card>, Serializable
     }
     
     /**
-     * Definition of the odd even iterator.
+     * Odd even iterator.
      */
     private class OddEvenIterator implements Iterator<Card>
     {
@@ -200,28 +200,25 @@ public class Deck implements Iterable<Card>, Serializable
                  * the value of currentPosition and return true.
                  */
                 currentCard = deck.get(currentPosition);
-                currentPosition += 2;
                 return true;
             }
             if(currentPosition < deck.size())
             {
-               /*
-                * This part ensures the last card of each pass is displayed
-                */
+                /*
+                 * This part ensures the last card of each pass is displayed.
+                 */
                 currentCard = deck.get(currentPosition);
-                currentPosition += 2;
                 return true;
             }
             if(loopPass == 0)
             {
                 /*
-                 * Set the currentPosition to an even starting position (0)
+                 * Set the currentPosition to an even starting position (0) 
                  * once the first (odd) pass is complete.
                  */
                 loopPass = 1;
                 currentPosition = 0;
                 currentCard = deck.get(currentPosition);
-                currentPosition += 2;
                 return true;
             }
             return false;
@@ -235,6 +232,7 @@ public class Deck implements Iterable<Card>, Serializable
         @Override
         public Card next()
         {
+            currentPosition += 2;
             return currentCard;
         }
         

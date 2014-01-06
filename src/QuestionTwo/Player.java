@@ -6,7 +6,7 @@ package QuestionTwo;
 
 /**
  *
- * @author Cypher
+ * @author Tony
  */
 public interface Player
 {
@@ -57,5 +57,4 @@ public interface Player
      * @return true if calling the last player a cheat.
      */
     boolean callCheat(Bid b);
-
 }

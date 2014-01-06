@@ -22,7 +22,7 @@ public class BasicStrategy implements Strategy
     }
     
     /**
-     * "Decide" if the player should cheat or not.
+     * Decide if the player should cheat or not.
      * 
      * @param b The current bid.
      * @param h The players current hand.
@@ -46,7 +46,7 @@ public class BasicStrategy implements Strategy
     }
     
     /**
-     * "Chooses" the next bid a player will make.
+     * Chooses the next bid a player will make.
      * 
      * @param b The current bid.
      * @param h The players current hand.
@@ -61,6 +61,8 @@ public class BasicStrategy implements Strategy
         Hand handToPlay = new Hand();
         if(cheat)
         {
+            // If cheating..
+            
             Random rand = new Random();
             //Choose the random card to be played out of the current hand.
             Card tempCard = h.getHeldCards().get(rand.nextInt(h.size()));
@@ -96,7 +98,7 @@ public class BasicStrategy implements Strategy
             //Return the cheat Bid.
             return myBid;
         }
-        //If not cheating.
+        //If not cheating..
         
         //Get the current rank being played.
         Card.Rank currentRank = b.getRank();

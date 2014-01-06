@@ -157,7 +157,7 @@ public class Card implements Comparable<Card>, Serializable
     /**
      * Contains two methods for getting the difference between cards.
      */
-    static class Difference
+    public static class Difference
     {
         /*
          * Nested static class. This class an its methods are not associated
