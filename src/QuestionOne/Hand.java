@@ -172,28 +172,44 @@ public class Hand implements Iterable<Card>, Serializable
     public boolean remove(Hand hand)
     {
         /*
-         * Wasn't sure if the operation should be canceled if
-         * all cards were not found.... Decided to leave it as
-         * is.
+         * This method will remove all cards in a passed in hand from this
+         * hand.
+         * 
+         * If all cards are not found none will be removed and the method
+         * will return false.
+         * The method will only return true if all cards were found and 
+         * removed.
          */
         int removeCount = 0;
+        //Iterate through the hand to ensure all cards are present.
         for (Card card : hand)
         {
             for (int i = 0; i < heldCards.size(); i++)
             {
                 Card tempCard = heldCards.get(i);
-                //Search for and remove cards
-                if (card.compareTo(tempCard) == 0 && heldCards.remove(tempCard))
+                //If the card is found update the count.
+                if (card.compareTo(tempCard) == 0)
                 {
-                    //Update records
-                    ranksHeld[tempCard.getRank().ordinal()]--;
-                    suitsHeld[tempCard.getSuit().ordinal()]--;
                     removeCount++;
                 }
             }
         }
-        //If the number or removes is eqaul to the passed in hand return true.
-        return removeCount == hand.size();
+        /*
+         * If the count is equal to the hand size then all cards were found.
+         * Except in the case where an empty hand was passed in. This will 
+         * also generate a false return.
+         */
+        if(hand.size() > 0 && removeCount == hand.size())
+        {
+            //Remove the cards and return true.
+            for (Card card : hand)
+            {
+                this.remove(card);
+            }
+            return true;
+        }
+        //Else don't remove any cards and return false.
+        return false;
     }
     
     

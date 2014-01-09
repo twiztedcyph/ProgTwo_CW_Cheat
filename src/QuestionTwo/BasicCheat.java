@@ -1,16 +1,15 @@
 /*
  * This program simulates the card game: Cheat.
  */
-
 package QuestionTwo;
 
 import java.util.*;
 
 /**
  * BasicCheat class.
- * 
+ *
  * CMPC2M1Y Programming 2 Coursework.
- * 
+ *
  * @author Not sure who wrote the initial class.
  * @author Ian Weeks 6204848
  */
@@ -23,7 +22,9 @@ public class BasicCheat implements CardGame
     private int currentPlayer;
     private Hand discards;
     private Bid currentBid;
-    
+    private ArrayList<Integer> cheatCallers;
+    private Random rand;
+
     /**
      * Default constructor.
      */
@@ -31,31 +32,32 @@ public class BasicCheat implements CardGame
     {
         this(MINPLAYERS);
     }
-    
+
     /**
      * Set the number of players constructor.
-     * 
+     *
      * @param n The number of players required.
      */
     public BasicCheat(int n)
     {
         nosPlayers = n;
         players = new BasicPlayer[nosPlayers];
-        for (int i = 0; i < nosPlayers - 1; i++)
+        for (int i = 0; i < nosPlayers - 2; i++)
         {
             //Set the player strategy and game reference.
             players[i] = (new BasicPlayer(new BasicStrategy(), this));
         }
+        players[nosPlayers - 2] = (new BasicPlayer(new ThinkerStrategy(), this));
         players[nosPlayers - 1] = (new BasicPlayer(new HumanStrategy(), this));
         //Initialise the bid.  This sets the starting rank to two.
         currentBid = new Bid();
         // TODO Make the first player the one with the two of clubs.
         currentPlayer = 0;
     }
-    
+
     /**
      * A single round of the game.
-     * 
+     *
      * @return True. <Not sure why as this value is never checked.>
      * Look into this at some stage with TA.
      */
@@ -72,44 +74,47 @@ public class BasicCheat implements CardGame
         //Offer all other players the chance to call cheat
         //TODO rework this section so that the first players dont have the advatage.... Threads or random.
         boolean cheat = false;
-        for (int i = 0; i < players.length && !cheat; i++)
+        cheatCallers = new ArrayList<>();
+        rand = new Random();
+        for (int i = 0; i < players.length; i++)
         {
-            if (i != currentPlayer)
+            if (i != currentPlayer && players[i].callCheat(currentBid))
             {
-                cheat = players[i].callCheat(currentBid);
-                if (cheat)
-                {
-                    System.out.println("Player " + (currentPlayer + 1) + " called cheat by Player " + (i + 1));
-                    if (isCheat(currentBid))
-                    {
-                        //CHEAT CALLED CORRECTLY
-                        //Give the discard pile of cards to currentPlayer who then has to play again                      
-                        players[currentPlayer].addHand(discards);
-                        System.out.println("Player " + (currentPlayer + 1) + " cheated!");
-                        System.out.println("Adding cards to player "
-                                + (currentPlayer + 1) + " " + players[currentPlayer]);
-
-                    } else
-                    {
-                        //CHEAT CALLED INCORRECTLY
-                        //Give cards to caller i who is new currentPlayer
-                        System.out.println("Player Honest");
-                        currentPlayer = i;
-                        players[currentPlayer].addHand(discards);
-                        System.out.println("Adding cards to player "
-                                + (currentPlayer + 1) + " " + players[currentPlayer]);
-                    }
-                    //If cheat is called, current bid reset to an empty bid with rank two whatever 
-                    //the outcome
-                    currentBid = new Bid();
-                    //Discards now reset to empty	
-                    discards = new Hand();
-                }
+                cheatCallers.add(i);
             }
         }
-        if (!cheat)
+        
+        if (cheatCallers.size() > 0)
         {
-            //Go to the next player       
+            int cheatCallWinner = cheatCallers.get(rand.nextInt(cheatCallers.size()));
+            System.out.println("Player " + (currentPlayer + 1) + " called cheat by Player " + (cheatCallWinner + 1));
+            if (isCheat(currentBid))
+            {
+                //CHEAT CALLED CORRECTLY
+                //Give the discard pile of cards to currentPlayer who then has to play again                      
+                players[currentPlayer].addHand(discards);
+                System.out.println("Player " + (currentPlayer + 1) + " cheated!");
+                System.out.println("Adding cards to player "
+                        + (currentPlayer + 1) + " " + players[currentPlayer]);
+
+            } else
+            {
+                //CHEAT CALLED INCORRECTLY
+                //Give cards to caller i who is new currentPlayer
+                System.out.println("Player Honest");
+                currentPlayer = cheatCallWinner;
+                players[currentPlayer].addHand(discards);
+                System.out.println("Adding cards to player "
+                        + (currentPlayer + 1) + " " + players[currentPlayer]);
+            }
+            //If cheat is called, current bid reset to an empty bid with rank two whatever 
+            //the outcome
+            currentBid = new Bid();
+            //Discards now reset to empty	
+            discards = new Hand();
+        }else
+        {
+            //Go to the next player
             System.out.println("No Cheat Called");
             //Modular math to "circularize" the players.
             currentPlayer = (currentPlayer + 1) % nosPlayers;
@@ -117,10 +122,10 @@ public class BasicCheat implements CardGame
         //Not sure why this returns true.
         return true;
     }
-    
+
     /**
      * Check if there is a current winner of the game.
-     * 
+     *
      * @return The index of the player who has won. Or -1 otherwise.
      */
     @Override
@@ -139,7 +144,7 @@ public class BasicCheat implements CardGame
         //Else return -1;
         return -1;
     }
-    
+
     /**
      * Initialise a game.
      */
@@ -167,7 +172,7 @@ public class BasicCheat implements CardGame
         //Set the first bid to TWO.
         currentBid.setRank(Card.Rank.TWO);
     }
-    
+
     /**
      * The game initialisation loop.
      */
@@ -183,22 +188,16 @@ public class BasicCheat implements CardGame
         while (!finished)
         {
             //Play a hand
-            System.out.println(" Cheat turn for player " + (currentPlayer + 1));
+            System.out.println("Cheat turn for player " + (currentPlayer + 1));
             /*
-             * Current player places a bid and others 
-             * asked if they will call cheat or not.
+             * Current player places a bid and others asked if they will call
+             * cheat or not.
              */
             playTurn();
-            System.out.println(" Current discards =\n" + discards);
             c++;
-            System.out.println(currentBid.h + " " + currentBid.r);
-            for (BasicPlayer basicPlayer : players)
-            {
-                System.out.print(basicPlayer.cardsLeft() + " ");
-            }
-            System.out.println(" Turn " + c + " Complete. Press any key to continue or enter Q to quit>");
-            System.out.println("");
+            System.out.print("Turn " + c + " Complete. Press any key to continue or enter Q to quit>");
             String str = in.nextLine();
+            System.out.println("");
             //Allow the user to quit at the end of each turn.
             if (str.equals("Q") || str.equals("q") || str.equals("quit"))
             {
@@ -212,10 +211,10 @@ public class BasicCheat implements CardGame
             }
         }
     }
-    
+
     /**
      * Check if a player cheated.
-     * 
+     *
      * @param b The player's played bid.
      * @return True if the player cheated. False otherwise.
      */
@@ -230,10 +229,10 @@ public class BasicCheat implements CardGame
         }
         return false;
     }
-    
+
     /**
      * Main method.
-     * 
+     *
      * @param args Input arguments.
      */
     public static void main(String[] args)
